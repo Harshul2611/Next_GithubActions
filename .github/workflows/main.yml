@@ -1,0 +1,36 @@
+name: "Updating website with new push"
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@4
+
+      - name: "Current working directory"
+        run: pwd
+
+      - name: "Installing node js"
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 22.14.0
+
+      - name: "Installing Dependencies and Package"
+        run: npm ci
+
+      - name: "Building code"
+        run: "npm run build"
+
+      - uses: JorgeLNJunior/render-deploy@v1.4.6
+        with:
+          service_id: ${{secrets.RENDER_SERVICE_ID}}
+          api_key: ${{secrets.RENDER_API_KEY}}
+          wait-for-success: true
+
+      
