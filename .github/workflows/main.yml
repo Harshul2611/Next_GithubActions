@@ -27,6 +27,13 @@ jobs:
       - name: "Building code"
         run: "npm run build"
 
+      - name: Debug secrets
+        env:
+          SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          echo "Service ID: $SERVICE_ID"
+          echo "Length: ${#SERVICE_ID}"
+
       - uses: JorgeLNJunior/render-deploy@v1.4.6
         with:
           service_id: ${{secrets.RENDER_SERVICE_ID}}
