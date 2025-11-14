@@ -34,10 +34,19 @@ jobs:
           echo "Service ID: $SERVICE_ID"
           echo "Length: ${#SERVICE_ID}"
 
-      - uses: JorgeLNJunior/render-deploy@v1.4.6
-        with:
-          service_id: ${{secrets.RENDER_SERVICE_ID}}
-          api_key: ${{secrets.RENDER_API_KEY}}
-          wait_deploy: true
+      # - uses: JorgeLNJunior/render-deploy@v1.4.6
+      #   with:
+      #     service_id: ${{secrets.RENDER_SERVICE_ID}}
+      #     api_key: ${{secrets.RENDER_API_KEY}}
+      #     wait_deploy: true
+
+      - name: Deploy to Render via API
+        env:
+          SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+          API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          echo "Deploying to Render..."
+          curl -X POST "https://api.render.com/deploy/$SERVICE_ID" \
+            -H "Authorization: Bearer $API_KEY"
 
       
